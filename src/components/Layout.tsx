@@ -8,3 +8,8 @@ export const Container = styled.div`
   margin-left: auto;
   box-sizing: border-box;
 `;
+
+export const Header = styled.header`
+  padding: 2rem;
+  text-align: center;
+`;
