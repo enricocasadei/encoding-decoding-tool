@@ -1,0 +1,49 @@
+import styled from 'styled-components';
+
+const CardBody = styled.div`
+  border-radius: 2px;
+  border: 1px solid #8e8e8e;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+`;
+
+const CardHeader = styled.div`
+  background: rgba(0, 0, 0, 0.03);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+`;
+const CardFooter = styled.div`
+  min-height: 26px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+`;
+
+const CardFooterAction = styled.div`
+  float: right;
+  min-height: 26px;
+  padding: 0.4rem;
+  line-height: 1rem;
+`;
+
+const CardContent = styled.div`
+  background: white;
+  padding: 1rem;
+  font-size: 1rem;
+  & > p + p {
+    padding-bottom: 1rem;
+  }
+`;
+
+export const Card = {
+  CardBody,
+  CardHeader,
+  CardFooter,
+  CardFooterAction,
+  CardContent,
+};
+
+export const Paragraph = styled.p<{ size?: string }>`
+  font-size: ${props => props.size || 'inherit'};
+`;

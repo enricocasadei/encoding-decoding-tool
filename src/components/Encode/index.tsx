@@ -1,23 +1,47 @@
 import React from 'react';
+import { Card, Paragraph } from '../Card';
 import encodeSentence from './encodeFunction';
 export default function Encode() {
   const [input, setInput] = React.useState<string>();
   const encodedInput = React.useMemo(() => encodeSentence(input), [input]);
   return (
-    <div>
-      <h2>Encoder</h2>
-      <h3>Input</h3>
-      <h4>Text to encode</h4>
-      <textarea rows={5} onChange={e => setInput(e.target.value)}>
-        {input}
-      </textarea>
-
-      <h3>Output</h3>
-      <h4>Encoded text</h4>
-      <div>{encodedInput.encodedSentence()}</div>
-
-      <h4>List of the original words that got encoded</h4>
-      <div>{encodedInput.getCleanedWord().join(' - ')}</div>
+    <div style={{ width: '50%' }}>
+      <Card.CardBody>
+        <Card.CardHeader>Encoder</Card.CardHeader>
+        <Card.CardContent>
+          <Paragraph size="1.5rem">Input</Paragraph>
+          <Paragraph>
+            <u>
+              <b>Text to encode</b>
+            </u>
+          </Paragraph>
+          <textarea
+            style={{ width: '100%' }}
+            rows={5}
+            onChange={e => setInput(e.target.value)}
+            value={input}
+          ></textarea>
+          <hr />
+          <Paragraph size="1.5rem">Output</Paragraph>
+          <Paragraph>
+            <u>
+              <b>Encoded text</b>
+            </u>
+          </Paragraph>
+          <Paragraph>{encodedInput.encodedSentence()}</Paragraph>
+          <Paragraph>
+            <u>
+              <b>List of the original words that got encoded</b>
+            </u>
+          </Paragraph>
+          <Paragraph>{encodedInput.getCleanedWord().join(' - ')}</Paragraph>
+        </Card.CardContent>
+        <Card.CardFooter>
+          <Card.CardFooterAction>
+            <a onClick={() => setInput("")}>X</a>
+          </Card.CardFooterAction>
+        </Card.CardFooter>
+      </Card.CardBody>
     </div>
   );
 }
