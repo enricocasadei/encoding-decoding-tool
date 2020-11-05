@@ -1,4 +1,4 @@
-import { encodeWord, getAllowedChar, specialCharMapTable } from './encodeFunction';
+import { encodeWord, getAllowedChar, getNewWord, insertInto, specialCharMapTable } from './encodeFunction';
 
 test("encodeWord returns '' if arg is 'undefined' ", () => {
   expect(encodeWord()).toBe('');
@@ -33,5 +33,17 @@ test('getAllowedChar returns only letter', () => {
 
 test('specialCharMapTable ', () => {
   const result = specialCharMapTable('Word with sp&c1@l char!');
-  expect(result).toStrictEqual({ '1': 14, '&': 12, '@': 15, '!': 22 });
+  expect(result).toStrictEqual({ 12: '&', 14: '1', 15: '@', 22: '!' });
 });
+
+test('insertInto: when a word became the world', () => {
+  const result = insertInto('Word', 3, 'l');
+  expect(result).toBe('World');
+});
+
+test('getNewWord: change randomly chars in a word. Here testing word of 4 chars.', () => {
+  const result = getNewWord('word');
+  expect(result).toBe('wrod');
+});
+
+

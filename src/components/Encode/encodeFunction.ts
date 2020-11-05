@@ -1,7 +1,6 @@
 /**
  * Encode sentence.
- * It return always a string
- * encode all the word in a sentence
+ * It returns an object with the lazy computation for the encoding and a lazy for the array of words encoded.
  * */
 
 export default function encodeSentence(
@@ -26,8 +25,9 @@ export default function encodeSentence(
 
 /**
  * Encode a single word.
- * It return always a string
+ * It return always a string.
  * In case the word has less than 3 letter, it is returned directly because no shuffle is allowed.
+ * It does not manage special chars.
  * */
 export function encodeWord(word?: string): string {
   if (!word) return '';
@@ -35,8 +35,8 @@ export function encodeWord(word?: string): string {
 
   return getNewWord(word);
 }
-/** Helper function. It changes the central letter in the word. It returns always a different word from the old one. */
-function getNewWord(oldWord: string): string {
+/** Helper function. It changes the central letters in the word. It returns always a different word from the old one. */
+export function getNewWord(oldWord: string): string {
   const a = [...oldWord];
   const f = a[0];
   const l = a[a.length - 1];
@@ -47,10 +47,8 @@ function getNewWord(oldWord: string): string {
 
   while (newWord === oldWord) {
     const s = shuffle(a.join(''));
-
     newWord = f + s + l;
   }
-
   return newWord;
 }
 /** Helper function. It randomly shuffle in the range of probability [-0.5, 0.5) */
@@ -71,13 +69,13 @@ export function specialCharMapTable(sentence: string): MapTable {
     }
   }, {});
 }
-
+/** Insert strings in a string:
+ *  based on a mapTable which map the index where the string has to be insert.
+ * Basically it is a more powerful 'insertInto' */
 function insertMapTable(sentence: string, mapTable: MapTable) {
-  return Object.entries(mapTable).reduce((acc, [idx, str]) => {
-    return insertInto(acc, parseInt(idx, 10), str);
-  }, sentence);
+  return Object.entries(mapTable).reduce((acc, [idx, str]) => insertInto(acc, parseInt(idx, 10), str), sentence);
 }
-
+/** Helper function. It insert a string in a string at a specific index */
 export function insertInto(word: string, index: number, str: string) {
   return word.substr(0, index) + str + word.substr(index);
 }

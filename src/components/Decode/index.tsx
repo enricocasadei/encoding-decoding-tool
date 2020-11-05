@@ -1,10 +1,8 @@
 import React from 'react';
 import { Card, Paragraph } from '../Card';
-import encodeSentence from './encodeFunction';
 
-export default function Encode() {
+export default function Decode() {
   const [input, setInput] = React.useState<string>();
-  const encodedInput = React.useMemo(() => encodeSentence(input), [input]);
   return (
     <Card.CardBody>
       <Card.CardHeader>Encoder</Card.CardHeader>
@@ -23,13 +21,13 @@ export default function Encode() {
             <b>Encoded text</b>
           </u>
         </Paragraph>
-        <Paragraph>{encodedInput.encodedSentence()}</Paragraph>
+        <Paragraph></Paragraph>
         <Paragraph>
           <u>
             <b>List of the original words that got encoded</b>
           </u>
         </Paragraph>
-        <Paragraph>{encodedInput.getCleanedWord().join(' - ')}</Paragraph>
+        <Paragraph></Paragraph>
       </Card.CardContent>
       <Card.CardFooter>
         <Card.CardFooterAction>
