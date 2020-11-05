@@ -1,8 +1,11 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
+import Encode from './components/Encode';
+import { Container } from './components/Container';
 
-function App() {
-  return <div>ciaone</div>;
+export default function App() {
+  return (
+    <Container>
+      <Encode />
+    </Container>
+  );
 }
-
-export default App;
