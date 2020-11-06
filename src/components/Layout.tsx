@@ -16,4 +16,5 @@ export const MainGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
   grid-column-gap: 26px;
+  grid-row-gap: 26px;
 `;

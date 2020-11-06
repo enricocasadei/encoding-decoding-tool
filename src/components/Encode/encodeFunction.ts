@@ -3,6 +3,8 @@
  * It returns an object with the lazy computation for the encoding and a lazy for the array of words encoded.
  * */
 
+import { Lazy, WordPermuted, MapTable } from "../../type";
+
 export default function encodeSentence(
   sentence?: string
 ): {
@@ -103,7 +105,7 @@ export function specialCharMapTable(sentence: string): MapTable {
 /** Insert strings in a string:
  *  based on a mapTable which map the index where the string has to be insert.
  * Basically it is a more powerful 'insertInto' */
-function insertMapTable(sentence: string, mapTable: MapTable) {
+export function insertMapTable(sentence: string, mapTable: MapTable) {
   return Object.entries(mapTable).reduce((acc, [idx, str]) => insertInto(acc, parseInt(idx, 10), str), sentence);
 }
 /** Helper function. It insert a string in a string at a specific index */
@@ -116,11 +118,3 @@ export function correctSentenceForPunctuation(word: string): string {
   return word.replace(/([.,:!?])(?=[^\s])/g, '$1 ');
 }
 
-type Index = number;
-type MapTable = Record<Index, string>;
-type Lazy<T> = () => T;
-type WordPermuted = {
-  changed: boolean;
-  word: string;
-  originalWord: string;
-};

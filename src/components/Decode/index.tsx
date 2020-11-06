@@ -3,9 +3,12 @@ import { ClearInput } from '../ClearInputButton';
 import { Card } from '../Card';
 import { Paragraph } from '../Paragraph';
 import TextareaDebounced from '../TextareaDebounced';
+import decodeSentence from './decodeFunction';
 
 export default function Decode() {
   const [input, setInput] = React.useState<string>();
+  const [words, setWords] = React.useState<string>();
+  const result = React.useMemo(decodeSentence(input, words), [input, words]);
   return (
     <Card.CardBody>
       <Card.CardHeader>Decoder</Card.CardHeader>
@@ -17,6 +20,12 @@ export default function Decode() {
           </u>
         </Paragraph>
         <TextareaDebounced onChange={setInput} input={input} />
+        <Paragraph>
+          <u>
+            <b>List of the words used to encode, please separate them with a white space</b>
+          </u>
+        </Paragraph>
+        <TextareaDebounced onChange={setWords} input={words} />
         <hr />
         <Paragraph size="1.5rem">Output</Paragraph>
         <Paragraph>
@@ -24,13 +33,8 @@ export default function Decode() {
             <b>Decoded text</b>
           </u>
         </Paragraph>
-        <Paragraph></Paragraph>
-        <Paragraph>
-          <u>
-            <b>List of the original words that got encoded</b>
-          </u>
-        </Paragraph>
-        <Paragraph></Paragraph>
+
+        <Paragraph color={result.error ? '#a80f0f' : undefined}>{result.response}</Paragraph>
       </Card.CardContent>
       <Card.CardFooter>
         <Card.CardFooterAction>
