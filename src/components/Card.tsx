@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const CardBody = styled.div`
+  height: fit-content;
   border-radius: 2px;
   border: 1px solid #8e8e8e;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
@@ -41,5 +42,3 @@ export const Card = {
   CardFooterAction,
   CardContent,
 };
-
-

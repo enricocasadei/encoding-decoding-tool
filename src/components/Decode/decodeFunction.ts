@@ -2,29 +2,21 @@ import { Lazy } from '../../type';
 import { correctSentenceForPunctuation, specialCharMapTable, getAllowedChar, insertMapTable } from '../../utils';
 
 export default function decodeSentence(
-  sentence?: string,
-  wordsKey?: string
+  sentence?: string
 ): Lazy<{
   error: boolean;
   response: string;
 }> {
-  if (!sentence && !wordsKey)
-    return () => ({
-      error: false,
-      response: '',
-    });
-  if (!sentence) return () => ({ response: 'Missing sentence', error: true });
-  if (!wordsKey) return () => ({ response: 'Missing keys', error: true });
+  if (sentence === undefined) return () => ({ response: '', error: false });
+  if (sentence === '') return () => ({ response: 'Missing sentence', error: true });
 
   const sentenceCorrectedForPunctuation = correctSentenceForPunctuation(sentence);
 
   const mapTable = specialCharMapTable(sentenceCorrectedForPunctuation);
 
-  // get all words and loop
   const arrWords = sentenceCorrectedForPunctuation.split(' ');
 
   const arrWordCleaned = arrWords.map(getAllowedChar).map(decodeWord);
-  console.log(arrWordCleaned);
 
   return () => ({
     error: false,

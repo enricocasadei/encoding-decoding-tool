@@ -29,5 +29,5 @@ export function insertInto(word: string, index: number, str: string) {
 
 /** Helper function. It insert a string in a string at a specific index */
 export function correctSentenceForPunctuation(word: string): string {
-  return word.replace(/([.,:!?])(?=[^\s])/g, '$1 ');
+  return word.replace(/([.,:!?\n\r])(?=[^\s])/g, '$1 ');
 }

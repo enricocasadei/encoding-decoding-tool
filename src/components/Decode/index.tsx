@@ -7,8 +7,8 @@ import decodeSentence from './decodeFunction';
 
 export default function Decode() {
   const [input, setInput] = React.useState<string>();
-  const [words, setWords] = React.useState<string>();
-  const result = React.useMemo(decodeSentence(input, words), [input, words]);
+
+  const result = React.useMemo(decodeSentence(input), [input]);
   return (
     <Card.CardBody>
       <Card.CardHeader>Decoder</Card.CardHeader>
@@ -20,12 +20,6 @@ export default function Decode() {
           </u>
         </Paragraph>
         <TextareaDebounced onChange={setInput} input={input} />
-        <Paragraph>
-          <u>
-            <b>List of the words used to encode, please separate them with a white space</b>
-          </u>
-        </Paragraph>
-        <TextareaDebounced onChange={setWords} input={words} />
         <hr />
         <Paragraph size="1.5rem">Output</Paragraph>
         <Paragraph>
