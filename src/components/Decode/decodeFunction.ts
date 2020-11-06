@@ -28,7 +28,7 @@ export default function decodeSentence(
   const decodeWordsKey = compose<(word: string) => string>(
     decodeWord,
     splitString,
-    correctSentenceForPunctuation
+    removeForbiddenChar
   )(wordsKey);
 
   const arrWordCleaned = compose<string>(
@@ -66,4 +66,4 @@ export function sortWord(word: string) {
   return [...word].sort().join('');
 }
 
-const mapFn = (cb: (...args: any[]) => unknown) => (arrWords: string[]) => arrWords.map(cb);
+const mapFn = (cb: (...args: any[]) => unknown) => (arr: string[]) => arr.map(cb);

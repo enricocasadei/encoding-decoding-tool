@@ -32,6 +32,6 @@ export function correctSentenceForPunctuation(word: string): string {
   return word.replace(/([.,:!?\n\r])(?=[^\s])/g, '$1 ');
 }
 
-
+// basic fn 
 export const splitString = (s: string) => s.split(' '); 
 export const joinStrings = (s: string[]) => s.join(' '); 
