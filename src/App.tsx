@@ -1,7 +1,7 @@
 import React from 'react';
 import Decode from './components/Decode';
 import Encode from './components/Encode';
-import { Container, Header } from './components/Layout';
+import { Container, Header, MainGrid } from './components/Layout';
 
 export default function App() {
   return (
@@ -9,12 +9,10 @@ export default function App() {
       <Header>
         <h1>WeirdText</h1>
       </Header>
-      <div style={{ width: '50%', float: "left" }}>
+      <MainGrid>
         <Encode />
-      </div>
-      <div style={{ width: '50%', float: "right" }}>
         <Decode />
-      </div>
+      </MainGrid>
     </Container>
   );
 }

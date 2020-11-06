@@ -11,3 +11,10 @@ export const Container = styled.div`
 export const Header = styled.header`
   text-align: center;
 `;
+
+export const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+  grid-column-gap: 26px;
+  grid-row-gap: 26px;
+`;
