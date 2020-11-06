@@ -1,10 +1,5 @@
 import { Lazy } from '../../type';
-import {
-  correctSentenceForPunctuation,
-  getAllowedChar,
-  insertMapTable,
-  specialCharMapTable,
-} from '../Encode/encodeFunction';
+import { correctSentenceForPunctuation, specialCharMapTable, getAllowedChar, insertMapTable } from '../../utils';
 
 export default function decodeSentence(
   sentence?: string,
