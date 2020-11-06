@@ -7,12 +7,12 @@ export default function Decode() {
   const [input, setInput] = React.useState<string>();
   return (
     <Card.CardBody>
-      <Card.CardHeader>Encoder</Card.CardHeader>
+      <Card.CardHeader>Decoder</Card.CardHeader>
       <Card.CardContent>
         <Paragraph size="1.5rem">Input</Paragraph>
         <Paragraph>
           <u>
-            <b>Text to encode</b>
+            <b>Text to dencode</b>
           </u>
         </Paragraph>
         <textarea style={{ width: '100%' }} rows={5} onChange={e => setInput(e.target.value)} value={input}></textarea>
@@ -20,7 +20,7 @@ export default function Decode() {
         <Paragraph size="1.5rem">Output</Paragraph>
         <Paragraph>
           <u>
-            <b>Encoded text</b>
+            <b>Decoded text</b>
           </u>
         </Paragraph>
         <Paragraph></Paragraph>
