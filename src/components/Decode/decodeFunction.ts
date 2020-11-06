@@ -2,13 +2,15 @@ import { Lazy } from '../../type';
 import { correctSentenceForPunctuation, specialCharMapTable, getAllowedChar, insertMapTable } from '../../utils';
 
 export default function decodeSentence(
-  sentence?: string
+  sentence?: string,
+  wordsKey?: string
 ): Lazy<{
   error: boolean;
   response: string;
 }> {
-  if (sentence === undefined) return () => ({ response: '', error: false });
+  if (sentence === undefined || wordsKey === undefined) return () => ({ response: '', error: false });
   if (sentence === '') return () => ({ response: 'Missing sentence', error: true });
+  if (wordsKey === '') return () => ({ response: 'Missing keys', error: true });
 
   const sentenceCorrectedForPunctuation = correctSentenceForPunctuation(sentence);
 
@@ -16,7 +18,9 @@ export default function decodeSentence(
 
   const arrWords = sentenceCorrectedForPunctuation.split(' ');
 
-  const arrWordCleaned = arrWords.map(getAllowedChar).map(decodeWord);
+  const decodeWithKeys = decodeWord(wordsKey.split(' '));
+
+  const arrWordCleaned = arrWords.map(getAllowedChar).map(decodeWithKeys);
 
   return () => ({
     error: false,
@@ -24,36 +28,24 @@ export default function decodeSentence(
   });
 }
 
-export function decodeWord(word?: string): string {
-  if (!word) return '';
-  if (word.length <= 3) return word;
-
-  return getOldWord(word);
+export function decodeWord(arrWordsKey: string[]) {
+  return (word: string): string => {
+    return getRightWord(word, arrWordsKey);
+  };
 }
 
-export function getOldWord(newWord: string): string {
-  const arrWord = [...newWord];
-  const firstLetter = arrWord[0];
-  const lastLetter = arrWord[arrWord.length - 1];
-  let oldWord = newWord;
-
-  arrWord.splice(0, 1);
-  arrWord.splice(arrWord.length - 1, 1);
-  let loops: number = 0;
-  // avoid infinite loop if word is aaaaaaaa
-  while (newWord === oldWord && loops < arrWord.length) {
-    const shuffledWord = permuteBack(arrWord.join(''));
-    oldWord = firstLetter + shuffledWord + lastLetter;
-    loops++;
+export function getRightWord(newWord: string, arrWordsKey: string[]) {
+  const arrSortedWordsKey: string[] = arrWordsKey.map(sortWord);
+  const newWordSorted: string = sortWord(newWord);
+  const indexFound = arrSortedWordsKey.findIndex(w => w === newWordSorted);
+  
+  if (indexFound > -1) {
+    return arrWordsKey[indexFound];
   }
-
-  return oldWord;
+  return newWord;
 }
 
-/** Helper function. It permute back the string moving the first char in the last index.
- * permutation possible should be the length of word.
- */
-export const permuteBack = (w: string): string => {
-  if (w === '') return '';
-  return [...w.slice(1, w.length), w[0]].join('');
-};
+/** Helper function. it maps string */
+function sortWord(word: string) {
+  return [...word].sort().join('');
+}
