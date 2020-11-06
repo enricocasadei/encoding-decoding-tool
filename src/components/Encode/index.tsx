@@ -3,6 +3,7 @@ import { ClearInput } from '../ClearInputButton';
 import { Card } from '../Card';
 import { Paragraph } from '../Paragraph';
 import encodeSentence from './encodeFunction';
+import TextareaDebounced from '../TextareaDebounced';
 
 export default function Encode() {
   const [input, setInput] = React.useState<string>();
@@ -17,7 +18,7 @@ export default function Encode() {
             <b>Text to encode</b>
           </u>
         </Paragraph>
-        <textarea style={{ width: '100%' }} rows={5} onChange={e => setInput(e.target.value)} value={input}></textarea>
+        <TextareaDebounced onChange={setInput} input={input} />
         <hr />
         <Paragraph size="1.5rem">Output</Paragraph>
         <Paragraph>
