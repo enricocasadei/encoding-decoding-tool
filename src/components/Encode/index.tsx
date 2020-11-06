@@ -32,7 +32,7 @@ export default function Encode() {
             <b>List of the original words that got encoded</b>
           </u>
         </Paragraph>
-        <Paragraph>{encodedInput.getCleanedWord().join(' ')}</Paragraph>
+        <Paragraph>{encodedInput.getCleanedWord().sort().join(' ')}</Paragraph>
       </Card.CardContent>
       <Card.CardFooter>
         <Card.CardFooterAction>

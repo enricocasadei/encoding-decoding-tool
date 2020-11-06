@@ -5,7 +5,10 @@
 
 export default function encodeSentence(
   sentence?: string
-): { getCleanedWord: Lazy<string[]>; encodedSentence: Lazy<string> } {
+): {
+  encodedSentence: Lazy<string>;
+  getCleanedWord: Lazy<string[]>;
+} {
   if (!sentence) return { encodedSentence: () => '', getCleanedWord: () => [] };
 
   const mapTable = specialCharMapTable(sentence);
@@ -14,13 +17,18 @@ export default function encodeSentence(
 
   const arrCleanWord = cleanSentence.split(' ');
 
+  const wordsPermuted = arrCleanWord.map(encodeWord);
+
   const encodedSentence = () => {
-    const newSentenceWithoutSpecialChar = arrCleanWord.map(encodeWord).join(' ');
+    const newSentenceWithoutSpecialChar = wordsPermuted.map(w => w.word).join(' ');
 
     return insertMapTable(newSentenceWithoutSpecialChar, mapTable);
   };
 
-  return { encodedSentence, getCleanedWord: () => arrCleanWord.filter(w => w.length >= 4) };
+  return {
+    encodedSentence,
+    getCleanedWord: () => wordsPermuted.filter(w => w.changed && w.word.length >= 3).map(w => w.originalWord),
+  };
 }
 
 /**
@@ -29,32 +37,53 @@ export default function encodeSentence(
  * In case the word has less than 3 letter, it is returned directly because no shuffle is allowed.
  * It does not manage special chars.
  * */
-export function encodeWord(word?: string): string {
-  if (!word) return '';
-  if (word.length <= 3) return word;
+export function encodeWord(word?: string): WordPermuted {
+  if (!word) return { changed: false, word: '', originalWord: '' };
+  if (word.length <= 3) return { changed: false, word, originalWord: word };
 
   return getNewWord(word);
 }
 /** Helper function. It changes the central letters in the word. It returns always a different word from the old one. */
-export function getNewWord(oldWord: string): string {
-  const a = [...oldWord];
-  const f = a[0];
-  const l = a[a.length - 1];
+export function getNewWord(oldWord: string): WordPermuted {
+  const arrWord = [...oldWord];
+  const firstLetter = arrWord[0];
+  const lastLetter = arrWord[arrWord.length - 1];
   let newWord = oldWord;
 
-  a.splice(0, 1);
-  a.splice(a.length - 1, 1);
-
-  while (newWord === oldWord) {
-    const s = shuffle(a.join(''));
-    newWord = f + s + l;
+  arrWord.splice(0, 1);
+  arrWord.splice(arrWord.length - 1, 1);
+  let loops: number = 0;
+  // avoid infinite loop if word is aaaaaaaa
+  while (newWord === oldWord && loops < arrWord.length) {
+    const shuffledWord = permute(arrWord.join(''));
+    newWord = firstLetter + shuffledWord + lastLetter;
+    loops++;
   }
-  return newWord;
+  // miss word that are actually changed
+  if (newWord !== oldWord) {
+    return {
+      changed: true,
+      word: newWord,
+      originalWord: oldWord,
+    };
+  }
+  return {
+    changed: false,
+    word: newWord,
+    originalWord: oldWord,
+  };
 }
-/** Helper function. It randomly shuffle in the range of probability [-0.5, 0.5) */
-const shuffle = (w: string): string => [...w].sort(_ => Math.random() - 0.5).join('');
+
+/** Helper function. It permute the string moving the last char in the first index.
+ * permutation possible should be the length of word.
+ */
+export const permute = (w: string): string => {
+  if (w === '') return '';
+  return [w[w.length - 1], ...w.slice(0, w.length - 1)].join('');
+};
+
 /** remove not allowed character from a string */
-export const getAllowedChar = (w: string): string => w.replace(/[^a-zA-Z ]/g, '');
+export const getAllowedChar = (w: string): string => w.replace(/[^a-zA-Z ]/g, ' ').replace(/  +/g, ' ');
 
 /** map not allowed character from a string */
 export function specialCharMapTable(sentence: string): MapTable {
@@ -83,3 +112,8 @@ export function insertInto(word: string, index: number, str: string) {
 type Index = number;
 type MapTable = Record<Index, string>;
 type Lazy<T> = () => T;
+type WordPermuted = {
+  changed: boolean;
+  word: string;
+  originalWord: string;
+};

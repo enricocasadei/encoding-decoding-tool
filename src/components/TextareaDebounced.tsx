@@ -6,10 +6,7 @@ export default function TextareaDebounced(props: {
   input?: string;
 }) {
   const [value, setValue] = React.useState<string | undefined>(props.input);
-  const delayedSet = React.useCallback(
-    debounce(q => props.onChange(q), 1000),
-    []
-  );
+  const delayedSet = React.useCallback(debounce(props.onChange, 1000), [props.onChange, debounce]);
   React.useEffect(() => {
     delayedSet(value);
   }, [value, delayedSet]);
@@ -23,10 +20,10 @@ export default function TextareaDebounced(props: {
   );
 }
 
-function debounce(func: (...args: any[]) => any, wait: number) {
+function debounce(func: (args: any) => any, wait: number) {
   let timeout: undefined | number;
-  return function (...args: any[]) {
+  return function (args: any) {
     timeout && clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(null, args), wait);
+    timeout = setTimeout(() => func(args), wait);
   };
 }
