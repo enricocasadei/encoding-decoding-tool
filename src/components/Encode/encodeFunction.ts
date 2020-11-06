@@ -11,9 +11,11 @@ export default function encodeSentence(
 } {
   if (!sentence) return { encodedSentence: () => '', getCleanedWord: () => [] };
 
-  const mapTable = specialCharMapTable(sentence);
+  const sentenceCorrectedForPunctuation = correctSentenceForPunctuation(sentence);
 
-  const cleanSentence = getAllowedChar(sentence);
+  const mapTable = specialCharMapTable(sentenceCorrectedForPunctuation);
+
+  const cleanSentence = getAllowedChar(sentenceCorrectedForPunctuation);
 
   const arrCleanWord = cleanSentence.split(' ');
 
@@ -83,7 +85,7 @@ export const permute = (w: string): string => {
 };
 
 /** remove not allowed character from a string */
-export const getAllowedChar = (w: string): string => w.replace(/[^a-zA-Z ]/g, ' ').replace(/  +/g, ' ');
+export const getAllowedChar = (w: string): string => w.replace(/[^a-zA-Z ]/g, '');
 
 /** map not allowed character from a string */
 export function specialCharMapTable(sentence: string): MapTable {
@@ -107,6 +109,11 @@ function insertMapTable(sentence: string, mapTable: MapTable) {
 /** Helper function. It insert a string in a string at a specific index */
 export function insertInto(word: string, index: number, str: string) {
   return word.substr(0, index) + str + word.substr(index);
+}
+
+/** Helper function. It insert a string in a string at a specific index */
+export function correctSentenceForPunctuation(word: string): string {
+  return word.replace(/([.,:!?])(?=[^\s])/g, '$1 ');
 }
 
 type Index = number;

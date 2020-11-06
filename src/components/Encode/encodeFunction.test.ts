@@ -1,4 +1,12 @@
-import { encodeWord, getAllowedChar, getNewWord, insertInto, permute, specialCharMapTable } from './encodeFunction';
+import {
+  correctSentenceForPunctuation,
+  encodeWord,
+  getAllowedChar,
+  getNewWord,
+  insertInto,
+  permute,
+  specialCharMapTable,
+} from './encodeFunction';
 
 test("encodeWord returns '' if arg is 'undefined' ", () => {
   expect(encodeWord().word).toBe('');
@@ -56,4 +64,10 @@ test('permute: basic usage', () => {
   expect(permute('aaaaaaaa')).toBe('aaaaaaaa');
   expect(permute('word')).toBe('dwor');
   expect(permute('biiiiig')).toBe('gbiiiii');
+});
+
+test('correctSentenceForPunctuation: add space correctly', () => {
+  expect(correctSentenceForPunctuation('This is a long looong test sentence,with some big (biiiiig) words!')).toBe(
+    'This is a long looong test sentence, with some big (biiiiig) words!'
+  );
 });
