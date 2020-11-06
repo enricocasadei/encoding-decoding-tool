@@ -1,5 +1,6 @@
-import { Lazy, WordPermuted } from "../../type";
-import { correctSentenceForPunctuation, getAllowedChar, insertMapTable, specialCharMapTable } from "../../utils";
+import { Lazy, WordPermuted } from '../../type';
+import { correctSentenceForPunctuation, removeForbiddenChar, insertMapTable, specialCharMapTable, splitString } from '../../utils';
+import compose from '../../utils/compose';
 /**
  * Encode sentence.
  * It returns an object with the lazy computation for the encoding and a lazy for the array of words encoded.
@@ -14,19 +15,16 @@ export default function encodeSentence(
 
   const sentenceCorrectedForPunctuation = correctSentenceForPunctuation(sentence);
 
+  // store the special char to re-insert them later
   const mapTable = specialCharMapTable(sentenceCorrectedForPunctuation);
 
-  const cleanSentence = getAllowedChar(sentenceCorrectedForPunctuation);
+  const wordsPermuted = compose<WordPermuted[]>(
+    mapToEncodedWord,
+    splitString,
+    removeForbiddenChar
+  )(sentenceCorrectedForPunctuation);
 
-  const arrCleanWord = cleanSentence.split(' ');
-
-  const wordsPermuted = arrCleanWord.map(encodeWord);
-
-  const encodedSentence = () => {
-    const newSentenceWithoutSpecialChar = wordsPermuted.map(w => w.word).join(' ');
-
-    return insertMapTable(newSentenceWithoutSpecialChar, mapTable);
-  };
+  const encodedSentence = () => insertMapTable(wordsPermuted.map(w => w.word).join(' '), mapTable);
 
   return {
     encodedSentence,
@@ -34,6 +32,7 @@ export default function encodeSentence(
   };
 }
 
+const mapToEncodedWord = (arr: string[]) => arr.map(encodeWord);
 /**
  * Encode a single word.
  * It return always a string.
@@ -84,5 +83,3 @@ export const permute = (w: string): string => {
   if (w === '') return '';
   return [w[w.length - 1], ...w.slice(0, w.length - 1)].join('');
 };
-
-

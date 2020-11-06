@@ -1,31 +1,47 @@
 import { Lazy } from '../../type';
-import { correctSentenceForPunctuation, specialCharMapTable, getAllowedChar, insertMapTable } from '../../utils';
+import {
+  correctSentenceForPunctuation,
+  specialCharMapTable,
+  removeForbiddenChar,
+  insertMapTable,
+  joinStrings,
+  splitString,
+} from '../../utils';
+import compose from '../../utils/compose';
 
 export default function decodeSentence(
   sentence?: string,
   wordsKey?: string
-): Lazy<{
+): {
   error: boolean;
-  response: string;
-}> {
-  if (sentence === undefined || wordsKey === undefined) return () => ({ response: '', error: false });
-  if (sentence === '') return () => ({ response: 'Missing sentence', error: true });
-  if (wordsKey === '') return () => ({ response: 'Missing keys', error: true });
+  response: Lazy<string>;
+} {
+  if (sentence === undefined) return { response: () => '', error: false };
+  if (sentence === '') return { response: () => 'Missing sentence', error: true };
+  if (wordsKey === '' || wordsKey === undefined) return { response: () => 'Missing keys', error: true };
 
   const sentenceCorrectedForPunctuation = correctSentenceForPunctuation(sentence);
 
+  // store the special char to re-insert them later
   const mapTable = specialCharMapTable(sentenceCorrectedForPunctuation);
 
-  const arrWords = sentenceCorrectedForPunctuation.split(' ');
+  const decodeWordsKey = compose<(word: string) => string>(
+    decodeWord,
+    splitString,
+    correctSentenceForPunctuation
+  )(wordsKey);
 
-  const decodeWithKeys = decodeWord(wordsKey.split(' '));
+  const arrWordCleaned = compose<string>(
+    joinStrings,
+    mapFn(decodeWordsKey),
+    mapFn(removeForbiddenChar),
+    splitString
+  )(sentenceCorrectedForPunctuation);
 
-  const arrWordCleaned = arrWords.map(getAllowedChar).map(decodeWithKeys);
-
-  return () => ({
+  return {
     error: false,
-    response: insertMapTable(arrWordCleaned.join(' '), mapTable),
-  });
+    response: () => insertMapTable(arrWordCleaned, mapTable),
+  };
 }
 
 export function decodeWord(arrWordsKey: string[]) {
@@ -38,7 +54,7 @@ export function getRightWord(newWord: string, arrWordsKey: string[]) {
   const arrSortedWordsKey: string[] = arrWordsKey.map(sortWord);
   const newWordSorted: string = sortWord(newWord);
   const indexFound = arrSortedWordsKey.findIndex(w => w === newWordSorted);
-  
+
   if (indexFound > -1) {
     return arrWordsKey[indexFound];
   }
@@ -46,6 +62,8 @@ export function getRightWord(newWord: string, arrWordsKey: string[]) {
 }
 
 /** Helper function. it maps string */
-function sortWord(word: string) {
+export function sortWord(word: string) {
   return [...word].sort().join('');
 }
+
+const mapFn = (cb: (...args: any[]) => unknown) => (arrWords: string[]) => arrWords.map(cb);
