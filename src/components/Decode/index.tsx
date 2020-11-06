@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, Paragraph } from '../Card';
+import { ClearInput } from '../ClearInputButton';
+import { Card } from '../Card';
+import { Paragraph } from '../Paragraph';
 
 export default function Decode() {
   const [input, setInput] = React.useState<string>();
@@ -31,7 +33,9 @@ export default function Decode() {
       </Card.CardContent>
       <Card.CardFooter>
         <Card.CardFooterAction>
-          <a onClick={() => setInput('')}>X</a>
+          <ClearInput disabled={!input} onClick={() => setInput('')}>
+            X
+          </ClearInput>
         </Card.CardFooterAction>
       </Card.CardFooter>
     </Card.CardBody>

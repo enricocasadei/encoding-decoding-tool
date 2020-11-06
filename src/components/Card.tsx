@@ -22,8 +22,6 @@ const CardFooter = styled.div`
 
 const CardFooterAction = styled.div`
   float: right;
-  min-height: 26px;
-  padding: 0.4rem;
   line-height: 1rem;
 `;
 
@@ -44,6 +42,4 @@ export const Card = {
   CardContent,
 };
 
-export const Paragraph = styled.p<{ size?: string }>`
-  font-size: ${props => props.size || 'inherit'};
-`;
+
