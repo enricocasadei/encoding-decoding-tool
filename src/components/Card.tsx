@@ -21,11 +21,6 @@ const CardFooter = styled.div`
   border-top: 1px solid rgba(0, 0, 0, 0.25);
 `;
 
-const CardFooterAction = styled.div`
-  float: right;
-  line-height: 1rem;
-`;
-
 const CardContent = styled.div`
   background: white;
   padding: 1rem;
@@ -39,6 +34,5 @@ export const Card = {
   CardBody,
   CardHeader,
   CardFooter,
-  CardFooterAction,
   CardContent,
 };

@@ -1,15 +1,15 @@
 import React from 'react';
-import { ClearInput } from '../ClearInputButton';
 import { Card } from '../Card';
 import { Paragraph } from '../Paragraph';
-import encodeSentence from './encodeFunction';
+import encodeSentence, { prettifyArr } from './encodeFunction';
 import TextareaDebounced from '../TextareaDebounced';
 
 export default function Encode() {
   const [input, setInput] = React.useState<string>();
   const encodedInput = React.useMemo(() => encodeSentence(input), [input]);
+  // eslint-disable-next-line
   const encodedSentence = React.useMemo(encodedInput.encodedSentence, [encodedInput]);
-  const listOfWords = React.useMemo(() => encodedInput.getCleanedWord().sort().join(' '), [encodedInput]);
+  const listOfWords = React.useMemo(() => prettifyArr(encodedInput.getCleanedWord()), [encodedInput]);
   return (
     <Card.CardBody>
       <Card.CardHeader>Encoder</Card.CardHeader>
@@ -41,13 +41,7 @@ export default function Encode() {
         </Paragraph>
         {listOfWords ? <Paragraph border="1px solid #ccc">{listOfWords}</Paragraph> : <>....</>}
       </Card.CardContent>
-      <Card.CardFooter>
-        <Card.CardFooterAction>
-          <ClearInput disabled={!input} onClick={() => setInput('')}>
-            X
-          </ClearInput>
-        </Card.CardFooterAction>
-      </Card.CardFooter>
+      <Card.CardFooter></Card.CardFooter>
     </Card.CardBody>
   );
 }

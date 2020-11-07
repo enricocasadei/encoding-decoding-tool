@@ -1,5 +1,11 @@
 import { Lazy, WordPermuted } from '../../type';
-import { correctSentenceForPunctuation, removeForbiddenChar, insertMapTable, specialCharMapTable, splitString } from '../../utils';
+import {
+  correctSentenceForPunctuation,
+  removeForbiddenChar,
+  insertMapTable,
+  specialCharMapTable,
+  splitString,
+} from '../../utils';
 import compose from '../../utils/compose';
 /**
  * Encode sentence.
@@ -83,3 +89,5 @@ export const permute = (w: string): string => {
   if (w === '') return '';
   return [w[w.length - 1], ...w.slice(0, w.length - 1)].join('');
 };
+
+export const prettifyArr = (arr: unknown[]): string => [...new Set(arr)].sort().join(' ');

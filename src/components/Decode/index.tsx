@@ -1,18 +1,20 @@
 import React from 'react';
-import { ClearInput } from '../ClearInputButton';
 import { Card } from '../Card';
 import { Paragraph } from '../Paragraph';
 import TextareaDebounced from '../TextareaDebounced';
 import decodeSentence from './decodeFunction';
 
 export default function Decode() {
-  const [input, setInput] = React.useState<string | undefined>();
-  const [words, setWords] = React.useState<string | undefined>();
-
-  const result = React.useMemo(() => decodeSentence(input, words), [input, words]);
+  const [inputs, setInputs] = React.useState<{ sentence?: string; words?: string }>({});
+  const setWords = React.useCallback((words: string) => setInputs({ sentence: inputs.sentence, words }), [
+    inputs.sentence,
+  ]);
+  const setInput = React.useCallback((sentence: string) => setInputs({ words: inputs.words, sentence }), [
+    inputs.words,
+  ]);
+  const result = React.useMemo(() => decodeSentence(inputs.sentence, inputs.words), [inputs]);
+  // eslint-disable-next-line
   const response = React.useMemo(result.response, [result]);
-
-  console.log({ input, words });
 
   return (
     <Card.CardBody>
@@ -29,13 +31,13 @@ export default function Decode() {
             <b>Text to decode</b>
           </u>
         </Paragraph>
-        <TextareaDebounced onChange={setInput} input={input} />
+        <TextareaDebounced onChange={setInput} input={inputs.sentence} />
         <Paragraph>
           <u>
             <b>Words used as key to decode</b>
           </u>
         </Paragraph>
-        <TextareaDebounced onChange={setWords} input={words} />
+        <TextareaDebounced onChange={setWords} input={inputs.words} />
         <hr />
         <Paragraph size="1.5rem">Output</Paragraph>
         <Paragraph>
@@ -54,19 +56,7 @@ export default function Decode() {
           <>....</>
         )}
       </Card.CardContent>
-      <Card.CardFooter>
-        <Card.CardFooterAction>
-          <ClearInput
-            disabled={!input}
-            onClick={() => {
-              setInput(undefined);
-              setWords(undefined);
-            }}
-          >
-            X
-          </ClearInput>
-        </Card.CardFooterAction>
-      </Card.CardFooter>
+      <Card.CardFooter></Card.CardFooter>
     </Card.CardBody>
   );
 }
