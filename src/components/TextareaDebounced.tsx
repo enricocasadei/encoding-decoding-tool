@@ -6,10 +6,11 @@ export default function TextareaDebounced(props: {
   input?: string;
 }) {
   const [value, setValue] = React.useState<string | undefined>(props.input);
-  const delayedSet = React.useCallback(debounce(props.onChange, 1000), [props.onChange, debounce]);
+  const delayedSet = React.useCallback(debounce(props.onChange, 500), [props.onChange, debounce]);
   React.useEffect(() => {
     delayedSet(value);
   }, [value, delayedSet]);
+ 
   return (
     <textarea
       style={{ width: '100%', ...props.style }}

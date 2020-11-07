@@ -10,6 +10,7 @@ export const ClearInput = styled.button<{ disabled?: boolean }>`
   background: transparent;
   color: #a80f0f;
   cursor: pointer;
+  min-height: 26px;
   &:hover {
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
     background-color: #a80f0f;

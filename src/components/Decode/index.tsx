@@ -6,17 +6,23 @@ import TextareaDebounced from '../TextareaDebounced';
 import decodeSentence from './decodeFunction';
 
 export default function Decode() {
-  const [input, setInput] = React.useState<string>();
-  const [words, setWords] = React.useState<string>();
+  const [input, setInput] = React.useState<string | undefined>();
+  const [words, setWords] = React.useState<string | undefined>();
 
   const result = React.useMemo(() => decodeSentence(input, words), [input, words]);
+  const response = React.useMemo(result.response, [result]);
+
+  console.log({ input, words });
 
   return (
     <Card.CardBody>
       <Card.CardHeader>Decoder</Card.CardHeader>
       <Card.CardContent>
-        <Paragraph>The decoder does not know the algorithm used to encode the text</Paragraph>
-        <Paragraph>It uses the keys to decode the sentence.</Paragraph>
+        <Paragraph size="0.85rem">
+          Insert in the field below some text puzzling: the decoder will try to pull some sense out of it.
+          <br />
+          The decoder does not know the algorithm used to encode the text, it uses the keys to decode the sentence.
+        </Paragraph>
         <Paragraph size="1.5rem">Input</Paragraph>
         <Paragraph>
           <u>
@@ -26,7 +32,7 @@ export default function Decode() {
         <TextareaDebounced onChange={setInput} input={input} />
         <Paragraph>
           <u>
-            <b>Words key to decode</b>
+            <b>Words used as key to decode</b>
           </u>
         </Paragraph>
         <TextareaDebounced onChange={setWords} input={words} />
@@ -37,11 +43,26 @@ export default function Decode() {
             <b>Decoded text</b>
           </u>
         </Paragraph>
-        <Paragraph color={result.error ? '#a80f0f' : undefined}>{result.response()}</Paragraph>
+        {response ? (
+          <Paragraph
+            border={`1px solid ${result.error ? '#a80f0f' : '#ccc'}`}
+            color={result.error ? '#a80f0f' : undefined}
+          >
+            {response}
+          </Paragraph>
+        ) : (
+          <>....</>
+        )}
       </Card.CardContent>
       <Card.CardFooter>
         <Card.CardFooterAction>
-          <ClearInput disabled={!input} onClick={() => setInput('')}>
+          <ClearInput
+            disabled={!input}
+            onClick={() => {
+              setInput(undefined);
+              setWords(undefined);
+            }}
+          >
             X
           </ClearInput>
         </Card.CardFooterAction>
