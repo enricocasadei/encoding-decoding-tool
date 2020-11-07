@@ -11,13 +11,13 @@ To install, simply get the code and launch `yarn` or `npm install`.
 
 ## App
 
-The app is created starting from cra-typescript. It presents 2 cards, one for encode and one for decode some strings. (Basic style is applied - the card are responsive). To start, launch `yarn start` or `npm start` and go at `http://localhost:9000/`.
+The app is created starting from cra-typescript. It presents 2 cards, one for encode and one for decode some strings. (Basic style is applied - the cards are responsive). To start, launch `yarn start` or `npm start` and go to `http://localhost:9000/`.
 
 ### Encoding
 
 The encoding algorithm is very simple. For each word belonging to the original text inserted by the user, it leaves its first and last characters in their original position, but shuffle (permute) all the characters in the middle of the word.
-Shuffle (permute) not randomly: it moves the last chars of the chars to permute in the first position and the other forward of one place, in this way all the letter that have to move are moved. Whatever is not a word (whitespace, punctuation, etc.), is left untouched.
-In addition it is returned the list of words that have been permuted - if the same word appears twice it is shown just once.
+Shuffle (permute) not randomly: it moves the last chars of the chars to permute in the first position and the other forward of one place, in this way all the letters that have to move are moved. Whatever is not a word (whitespace, punctuation, etc.), is left untouched.
+In addition, it is returned the list of words that have been permuted - if the same word appears twice it is shown just once.
 
 **Example**
 Sentence to decode: 
@@ -35,7 +35,7 @@ This long sentence some test with words
 
 ### Decoding
 
-The decoding part is based on the ending's principle but knows nothing about the "algorithm". Based on the cipher (list of words) it convert the given sentence. If a some words are missing from the cipher, but present in the sentence to decode, they are leaved untouched.
+The decoding part is based on the ending's principle, but it knows nothing about the "algorithm". Based on the cipher (list of words) it converts the given sentence. If some words are missing from the cipher, but present in the sentence to decode, they are left untouched.
 
 **Example**
 Sentence to decode: 
