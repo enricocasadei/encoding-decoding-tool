@@ -20,33 +20,43 @@ Shuffle (permute) not randomly: it moves the last chars of the chars to permute 
 In addition, it is returned the list of words that have been permuted - if the same word appears twice it is shown just once.
 
 **Example**
-Sentence to decode: 
+Sentence to decode:
+
 ```
 This is a long long test sentence, with some big (biiiiig) words!
 ```
+
 Output:
+
 ```
 Tihs is a lnog lnog tset scentene, wtih smoe big (biiiiig) wdors!
 ```
+
 Keys output:
+
 ```
 This long sentence some test with words
 ```
 
 ### Decoding
 
-The decoding part is based on the ending's principle, but it knows nothing about the "algorithm". Based on the cipher (list of words) it converts the given sentence. If some words are missing from the cipher, but present in the sentence to decode, they are left untouched.
+The decoding part is based on the ending's principle, but it knows nothing about the "algorithm". Based on the cipher (list of words) it converts the given sentence. If some words are missing from the cipher, but present in the sentence to decode, they are left untouched. Since the sentence to decode and the keys are required, the user is informed to insert them if not provided.
 
 **Example**
-Sentence to decode: 
+Sentence to decode:
+
 ```
 Tihs is a lnog loonog tset sntceene, wtih smoe big (biiiiig) wdros!
 ```
+
 Keys:
+
 ```
 long looong sentence some test This with words
 ```
+
 Output:
+
 ```
 This is a long looong test sentence, with some big (biiiiig) words!
 ```

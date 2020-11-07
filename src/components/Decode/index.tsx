@@ -21,9 +21,9 @@ export default function Decode() {
       <Card.CardHeader>Decoder</Card.CardHeader>
       <Card.CardContent>
         <Paragraph size="0.85rem">
-          Insert in the field below some text puzzling: the decoder will try to pull some sense out of it.
+          Insert in the fields below: some text puzzling and the some words to be used as keys to decode.
           <br />
-          The decoder does not know the algorithm used to encode the text, it uses the keys to decode the sentence.
+          A very "intelligent algorithm" (:troll:) will try to make sense of it.
         </Paragraph>
         <Paragraph size="1.5rem">Input</Paragraph>
         <Paragraph>

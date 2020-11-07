@@ -15,9 +15,9 @@ export default function Encode() {
       <Card.CardHeader>Encoder</Card.CardHeader>
       <Card.CardContent>
         <Paragraph size=".85rem">
-          Insert in the field below some text and booooom, magic!
+          Insert in the field below some text and booooom, magic happens!
           <br />
-          The text permuted will appears and the list of word encoded.
+          The text permuted and a list of word encoded will be displayed.
         </Paragraph>
         <Paragraph size="1.5rem">Input</Paragraph>
         <Paragraph>
